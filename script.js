@@ -22,13 +22,32 @@ addBook('Infinite Game', 'Simon Sinek','400','isRead')
 addBook('A new Revolution', 'Jeremy D Pokin','400','isRead')
 
 function dispBook(){
-    myLibrary.forEach((book)=>{
-        console.log(book.title)
-        /*console.log(book.author)
-        console.log(book.pages)
-        console.log(book.read)*/
-        console.table(book)
-    })
+        const container = document.querySelector('.display')
+        container.innerHTML= "";
+        myLibrary.forEach((book)=>{
+            const content = document.createElement('div')
+            content.classList = 'book-card';
+            content.textContent = `${book.title} by ${book.author}`;
+            container.appendChild(content)
+        })
 }
 dispBook()
+
+
+let btn = document.querySelector('.button button')
+btn.addEventListener("click",dispForm)
+
+let clsBtn = document.querySelector('.submit button')
+clsBtn.addEventListener("click",closeForm)
+
+function dispForm(){
+    const showForm = document.querySelector('#sidebar')
+    showForm.style.display = "block"
+    
+
+}
+function closeForm(event){
+   
+}
+
 
