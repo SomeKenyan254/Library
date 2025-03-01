@@ -22,17 +22,38 @@ addBook('Infinite Game', 'Simon Sinek','400','isRead')
 addBook('A new Revolution', 'Jeremy D Pokin','400','isRead')
 
 function dispBook(){
-        const container = document.querySelector('.display')
-        container.innerHTML= "";
-        myLibrary.forEach((book)=>{
+       container.innerHTML= "";
+        myLibrary.forEach((book,index)=>{
             const content = document.createElement('div')
             content.classList = 'book-card';
+            
             content.textContent = `${book.title} by ${book.author}`;
             container.appendChild(content)
-        })
-}
-dispBook()
 
+            const dltBtn = document.createElement('button')
+            dltBtn.textContent = 'X'
+            dltBtn.classList.add('delete-btn');
+            dltBtn.setAttribute('data-index',index)
+
+
+            dltBtn.addEventListener('click', (e) => {
+                const bookIndex = e.target.getAttribute('data-index');
+                console.log(bookIndex)
+                myLibrary.splice(bookIndex,1); 
+                dispBook()
+                
+            })
+            content.appendChild(dltBtn)
+          
+            
+
+
+        })
+       
+}
+
+
+const container = document.querySelector('.display')
 
 let btn = document.querySelector('.button button')
 btn.addEventListener("click",dispForm)
@@ -47,7 +68,19 @@ function dispForm(){
 
 }
 function closeForm(event){
-   
+   event.preventDefault();
+   const title = document.querySelector('#title').value;
+   const author = document.querySelector('#author').value;
+   const pages = document.querySelector('#pages').value;
+   const read = document.querySelector('#read').value;
+   addBook(title,author,pages,read)
+   dispBook()
 }
+dispBook()
+
+
+
+
+
 
 
