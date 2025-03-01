@@ -33,7 +33,7 @@ function dispBook(){
             //Remove book from library
             const dltBtn = document.createElement('button')
             dltBtn.textContent = 'X'
-            dltBtn.classList.add('delete-btn');
+            dltBtn.classList.add('dlt-btn');
             dltBtn.setAttribute('data-index',index)
 
 
@@ -47,7 +47,7 @@ function dispBook(){
             
                 const statBtn = document.createElement('button')
                 statBtn.textContent = book.read ? ' Read' : 'Unread';
-                statBtn.classList.add('toggle-btn');
+                statBtn.classList.add('tgl-btn');
                 statBtn.setAttribute('data-index', index);
 
                 statBtn.addEventListener('click', (e) => {
@@ -71,11 +71,11 @@ Book.prototype.bookStatus = function(){
 
 const container = document.querySelector('.display')
 
-let btn = document.querySelector('.button button')
+let btn = document.querySelector('.addbook')
 btn.addEventListener("click",dispForm)
 
 let clsBtn = document.querySelector('.submit button')
-clsBtn.addEventListener("click",closeForm)
+clsBtn.addEventListener("click",updateLib)
 
 function dispForm(){
     const showForm = document.querySelector('#sidebar')
@@ -84,7 +84,7 @@ function dispForm(){
 
 }
 //Add books to library from user input
-function closeForm(event){
+function updateLib(event){
    event.preventDefault();
    const title = document.querySelector('#title').value;
    const author = document.querySelector('#author').value;
