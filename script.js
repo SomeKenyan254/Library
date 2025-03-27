@@ -1,99 +1,101 @@
-const myLibrary = [];
 
+class Library{
+    constructor(){
+        this.myLibrary = [];
+    }
+    createBook(title, author, pages, read) {
+        return {
+            title,
+            author,
+            pages,
+            read: read === 'isRead',
+            bookStatus() {
+                this.read = !this.read;
+            }
+        };
+    }
 
-function Book(title,author,pages,read){
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read === 'isRead';
-}
-  
+    addBook(title,author,pages,read){   
+       const newBook = this.createBook(title,author,pages,read)
+        this.myLibrary.push(newBook)
+        this.dispBook();
 
-function addBook(title,author,pages,read){
-    const newBook = new Book(title,author,pages,read)
-    myLibrary.push(newBook)
-    
-   
-}
-addBook('The Hobbit', 'J.R.R. Tolkien','300','isRead')
-addBook('The Color of Law', 'Richard Rothstein','217','isRead')
-addBook('The Trading Game', 'Gary Stevenson','256','isRead')
-addBook('Infinite Game', 'Simon Sinek','400','isRead')
-addBook('A new Revolution', 'Jeremy D Pokin','400','isRead')
-
-function dispBook(){
-       container.innerHTML= "";
-        myLibrary.forEach((book,index)=>{
-            const content = document.createElement('div')
-            content.classList = 'book-card';
-            
-            content.textContent = `${book.title} by ${book.author}`;
-          
-
-            //Remove book from library
-            const dltBtn = document.createElement('button')
-            dltBtn.textContent = 'X'
-            dltBtn.classList.add('dlt-btn');
-            dltBtn.setAttribute('data-index',index)
-
-
-            dltBtn.addEventListener('click', (e) => {
-                const bookIndex = e.target.getAttribute('data-index');
-                myLibrary.splice(bookIndex,1); 
-                dispBook()
-                
+    }
+    dispBook(){
+        const container = document.querySelector('.display')
+        container.innerHTML= "";
+         this.myLibrary.forEach((book,index)=>{
+             const content = document.createElement('div')
+             content.classList = 'book-card';
+             
+             content.textContent = `${book.title} by ${book.author}`;
+           
+ 
+             //Remove book from library
+             const dltBtn = document.createElement('button')
+             dltBtn.textContent = 'X'
+             dltBtn.classList.add('dlt-btn');
+             dltBtn.setAttribute('data-index',index)
+ 
+ 
+             dltBtn.addEventListener('click', (e) => {
+                 const bookIndex = e.target.getAttribute('data-index');
+                this.myLibrary.splice(bookIndex,1); 
+                 this.dispBook()
+                 
+             })
+             content.appendChild(dltBtn)
+             
+                 const statBtn = document.createElement('button')
+                 statBtn.textContent = book.read ? ' Read' : 'Unread';
+                 statBtn.classList.add('tgl-btn');
+                 statBtn.setAttribute('data-index', index);
+ 
+                 statBtn.addEventListener('click', (e) => {
+                 const bookIndex = e.target.getAttribute('data-index');
+                 this.myLibrary[bookIndex].bookStatus();
+                 this.dispBook(); })
+                 content.appendChild(statBtn)
+             
+             container.appendChild(content)
             })
-            content.appendChild(dltBtn)
-            
-                const statBtn = document.createElement('button')
-                statBtn.textContent = book.read ? ' Read' : 'Unread';
-                statBtn.classList.add('tgl-btn');
-                statBtn.setAttribute('data-index', index);
+        }
+        dispForm() {
+            const showForm = document.querySelector('#sidebar');
+            showForm.style.display = "block";
+        }
+    
+        updateLib() {
+            const title = document.querySelector('#title').value;
+            const author = document.querySelector('#author').value;
+            const pages = document.querySelector('#pages').value;
+            const read = document.querySelector('#read').checked ? 'isRead' : 'notRead';
+    
+            this.addBook(title, author, pages, read);
+    
+            const showForm = document.querySelector('#sidebar');
+            showForm.style.display = "none";
+        }
+    }
 
-                statBtn.addEventListener('click', (e) => {
-                const bookIndex = e.target.getAttribute('data-index');
-                myLibrary[bookIndex].bookStatus();
-                dispBook(); })
-                content.appendChild(statBtn)
-            
-            container.appendChild(content)
-            
-          
-            
+//Create a new library
+const library = new Library();
 
+library.addBook('The Hobbit', 'J.R.R. Tolkien','300','isRead')
+library.addBook('The Color of Law', 'Richard Rothstein','217','isRead')
+library.addBook('The Trading Game', 'Gary Stevenson','256','isRead')
+library.addBook('Infinite Game', 'Simon Sinek','400','isRead')
+library.addBook('A new Revolution', 'Jeremy D Pokin','400','isRead')
 
-        })
-       
-}
-Book.prototype.bookStatus = function(){
-    this.read = !this.read;}
-
-
-const container = document.querySelector('.display')
-
-let btn = document.querySelector('.addbook')
-btn.addEventListener("click",dispForm)
+//Event Listeners
+const btn = document.querySelector('.addbook')
+btn.addEventListener("click",() => library.dispForm())
 
 let clsBtn = document.querySelector('.submit button')
-clsBtn.addEventListener("click",updateLib)
+clsBtn.addEventListener("click",() => library.updateLib())
 
-function dispForm(){
-    const showForm = document.querySelector('#sidebar')
-    showForm.style.display = "block"
-    
 
-}
 //Add books to library from user input
-function updateLib(event){
-   event.preventDefault();
-   const title = document.querySelector('#title').value;
-   const author = document.querySelector('#author').value;
-   const pages = document.querySelector('#pages').value;
-   const read = document.querySelector('#read').checked ? 'isRead' : 'notRead';;
-   addBook(title,author,pages,read)
-   dispBook()
-}
-dispBook()
 
 
 
